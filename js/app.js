@@ -43,6 +43,7 @@ function render() {
   playerCharacter.drawPlayer(ctx, tileSize)
   enemies.forEach((enemy) => enemy.drawEnemy(ctx, tileSize))
   enemies.forEach((enemy) => enemy.update(playerCharacter.x, playerCharacter.y))
+  updateGameInfo(playerCharacter, enemies)
 
   checkCollisions()
 }
