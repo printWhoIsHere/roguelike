@@ -4,7 +4,6 @@ import { Enemy } from './game/enemy.js'
 import { handleInput } from './game/input.js'
 import { updateGameInfo } from './modals/infoModal.js'
 import settings from './settings/settings.js'
-import { updateDifficult } from './modals/difficultyModal.js'
 
 const canvas = document.getElementById('gameCanvas')
 const ctx = canvas.getContext('2d')
@@ -16,6 +15,7 @@ canvas.height = height * tileSize
 
 const map = new Map(width, height)
 const playerCharacter = new Hero('Герой', 100, 20, map)
+map.addEntity(playerCharacter)
 
 const enemies = []
 for (let i = 0; i < settings.enemy.quantity; i++) {
@@ -26,6 +26,16 @@ for (let i = 0; i < settings.enemy.quantity; i++) {
     map
   )
   enemies.push(enemy)
+  map.addEntity(enemy)
+}
+
+function checkCollisions() {
+  enemies.forEach((enemy) => {
+    if (playerCharacter.x === enemy.x && playerCharacter.y === enemy.y) {
+      playerCharacter.attackEnemy(enemy)
+      updateGameInfo(playerCharacter, enemies)
+    }
+  })
 }
 
 function render() {
@@ -33,7 +43,8 @@ function render() {
   playerCharacter.drawPlayer(ctx, tileSize)
   enemies.forEach((enemy) => enemy.drawEnemy(ctx, tileSize))
   enemies.forEach((enemy) => enemy.update(playerCharacter.x, playerCharacter.y))
-  updateGameInfo(playerCharacter, enemies)
+
+  checkCollisions()
 }
 
 render()

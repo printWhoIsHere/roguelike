@@ -1,10 +1,13 @@
 import settings from '../settings/settings.js'
+import { Hero } from './player.js'
+import { Enemy } from './enemy.js'
 
 class Map {
   constructor(width, height) {
     this.width = width
     this.height = height
     this.tiles = this.genearteMap(width, height)
+    this.entities = []
     this.imgWall = new Image()
     this.imgWall.src = 'images/wall.png'
   }
@@ -79,51 +82,57 @@ class Map {
     return map
   }
 
-  // drawMap(ctx, tileSize) {
-  //   const self = this
-  //   const imgFloor = new Image()
-  //   imgFloor.src = 'images/floor.png'
+  addEntity(entity) {
+    this.entities.push(entity) // Метод для добавления объектов на карту
+  }
 
-  //   imgFloor.onload = () => {
-  //     for (let y = 0; y < self.height; y++) {
-  //       for (let x = 0; x < self.width; x++) {
-  //         if (self.tiles[y][x] === 'wall') {
-  //           ctx.drawImage(
-  //             self.imgWall,
-  //             x * tileSize,
-  //             y * tileSize,
-  //             tileSize * 4,
-  //             tileSize * 4
-  //           )
-  //         } else if (self.tiles[y][x] === 'floor') {
-  //           ctx.drawImage(
-  //             imgFloor,
-  //             x * tileSize,
-  //             y * tileSize,
-  //             tileSize,
-  //             tileSize
-  //           )
+  drawEntities(ctx, tileSize) {
+    this.entities.forEach((entity) => {
+      if (entity instanceof Hero) {
+        entity.drawPlayer(ctx, tileSize)
+      } else if (entity instanceof Enemy) {
+        entity.drawEnemy(ctx, tileSize)
+      }
+      // Добавьте сюда другие типы объектов, если они будут
+    })
+  }
 
-  //           // Добавляем обводку вокруг изображения пола
-  //           ctx.strokeStyle = '#000' // Цвет обводки
-  //           ctx.lineWidth = 0.2
-  //           ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize)
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+  // Изменяем метод drawMap
   drawMap(ctx, tileSize) {
-    ctx.fillStyle = '#000'
-    ctx.fillRect(0, 0, this.width * tileSize, this.height * tileSize)
+    const self = this
+    const imgFloor = new Image()
+    imgFloor.src = 'images/floor.png'
 
-    ctx.fillStyle = '#fff'
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        if (this.tiles[y][x] === 'floor') {
-          ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
+    imgFloor.onload = () => {
+      for (let y = 0; y < self.height; y++) {
+        for (let x = 0; x < self.width; x++) {
+          if (self.tiles[y][x] === 'wall') {
+            ctx.drawImage(
+              self.imgWall,
+              x * tileSize,
+              y * tileSize,
+              tileSize * 4,
+              tileSize * 4
+            )
+          } else if (self.tiles[y][x] === 'floor') {
+            ctx.drawImage(
+              imgFloor,
+              x * tileSize,
+              y * tileSize,
+              tileSize,
+              tileSize
+            )
+
+            // Добавляем обводку вокруг изображения пола
+            ctx.strokeStyle = '#000' // Цвет обводки
+            ctx.lineWidth = 0.2
+            ctx.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize)
+          }
         }
       }
+      // Отрисовываем объекты на карте после отрисовки тайлов
+      this.drawEntities(ctx, tileSize)
+      console.log('Карта с сущностями:', this.tiles)
     }
   }
 }

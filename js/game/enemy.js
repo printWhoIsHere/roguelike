@@ -12,6 +12,22 @@ class Enemy {
     this.randomPlace()
   }
 
+  attackHero(hero) {
+    const damageToHero = this.attack
+    if (damageToHero > 0) {
+      hero.health -= damageToHero
+      sidebar.insertAdjacentHTML(
+        'afterbegin',
+        `<p>${this.name} атакует ${hero.name} и наносит ${damageToHero} урона!</p>`
+      )
+    } else {
+      sidebar.insertAdjacentHTML(
+        'afterbegin',
+        `<p>${this.name} не наносит урона ${hero.name}!</p>`
+      )
+    }
+  }
+
   randomPlace() {
     let randomX, randomY
     do {
