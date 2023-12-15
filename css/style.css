@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500&display=swap');
+@import url('modal.css');
+
 :root {
 	--color-dark: #212121;
 	--color-dark-alt: #474745;

@@ -21,7 +21,7 @@ class Hero {
     this.y = randomY
   }
 
-  drawCharacter(ctx, tileSize) {
+  drawPlayer(ctx, tileSize) {
     const characterX = this.x * tileSize
     const characterY = this.y * tileSize
     // this.imgHero.onload = () => {

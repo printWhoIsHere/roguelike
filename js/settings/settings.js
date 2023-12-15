@@ -1,4 +1,9 @@
 const settings = {
+  global: {
+    width: 60,
+    height: 30,
+    tileSize: 20,
+  },
   map: {
     numRooms: 20,
     maxRoomSize: 6,
@@ -13,6 +18,7 @@ const settings = {
     quantity: 2,
     health: 50,
     attack: 10,
+    viewingRadius: 5,
   },
 }
 
